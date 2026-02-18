@@ -58,7 +58,8 @@ html, body {
 .phone-container {
   width: 100%;
   max-width: 430px; /* tamaño tipo móvil */
-  height: calc(100vh - 180px);
+  /*height: calc(100vh - 180px);*/
+  height: 100svh;
   background: black;
   border-radius: 25px;
   overflow: hidden;
