@@ -14,30 +14,29 @@ html, body {
 
 /* Página completa */
 .page {
-  min-height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  background: black;
 }
 
 .app-container {
   width: 100%;
   max-width: 430px;
-  margin: 0 auto;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  background: black;
 }
-
 /* Header */
+
+
 .header {
   width: 100%;
   text-align: center;
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: black;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex-shrink: 0;
 }
 
 .header h1 {
@@ -47,11 +46,9 @@ html, body {
 }
 
 .phone-wrapper {
-  flex: 1;
+  flex: 1;            /* 👈 ocupa solo el espacio libre */
+  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
 }
 
 /* Contenedor tipo teléfono (solo escritorio) */
@@ -59,13 +56,13 @@ html, body {
   width: 100%;
   max-width: 430px; /* tamaño tipo móvil */
   /*height: calc(100vh - 180px);*/
-  height: 100svh;
   background: black;
   border-radius: 25px;
   overflow: hidden;
   box-shadow: 0 0 40px rgba(0,0,0,0.8);
   border: 2px solid #222;
   overflow: hidden;
+  flex: 1;
 }
 
 /* Scroll vertical */
@@ -74,6 +71,7 @@ html, body {
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
+
 
    /* 🔥 Mejor experiencia táctil */
   -webkit-overflow-scrolling: touch;
@@ -119,8 +117,9 @@ html, body {
 
 .video-info {
   position: absolute;
-  bottom: 40px;
+  bottom: 20px; /* menos margen fijo */
   left: 20px;
+  right: 20px;
   z-index: 2;
 }
 
@@ -139,7 +138,7 @@ html, body {
 .buttons {
   position: absolute;
   right: 15px;
-  bottom: 80px;
+  bottom: 100px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -165,13 +164,13 @@ html, body {
 @media (max-width: 768px) {
   .phone-container {
    max-width: 100%;
-    height: calc(100vh - 170px);
+    /*height: calc(100vh - 180px);*/
   }
 }
 
 /* Barra inferior */
 .bottom-nav {
-  position: sticky;
+  /*position: sticky;*/
   bottom: 0;
   width: 100%;
   max-width: 430px; /* igual que phone-container */
@@ -182,6 +181,7 @@ html, body {
   padding: 10px 0;
   border-top: 1px solid #222;
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .bottom-nav button {
@@ -208,7 +208,7 @@ html, body {
 
 /* Página Home */
 .home-page {
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -261,9 +261,12 @@ html, body {
   overflow-y: hidden;
   white-space: nowrap;
   background-color: #111;
-  padding: 10px 0;
+  padding: 9px 0px;
   border-top: 1px solid #222;
   border-bottom: 1px solid #222;
+
+  height: 60px;
+  flex-shrink: 0;
 
   -webkit-overflow-scrolling: touch; /* 🔥 mejora scroll iOS */
   scroll-behavior: smooth;
@@ -277,7 +280,7 @@ html, body {
   background: transparent;
   border: none;
   color: white;
-  padding: 8px 18px;
+  padding: 7px 18px;
   margin: 0 5px;
   font-size: 14px;
   cursor: pointer;
@@ -288,7 +291,7 @@ html, body {
 }
 
 .category-bar button:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(0, 153, 255, 0.638);
 }
 
 .active-category {

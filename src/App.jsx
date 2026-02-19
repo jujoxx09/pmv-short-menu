@@ -97,6 +97,21 @@ function App() {
   };
 
   useEffect(() => {
+  const setRealHeight = () => {
+    document.documentElement.style.setProperty(
+      "--vh",
+      `${window.innerHeight * 0.01}px`
+    );
+  };
+
+  setRealHeight();
+  window.addEventListener("resize", setRealHeight);
+
+  return () => window.removeEventListener("resize", setRealHeight);
+  }, []);
+  
+
+  useEffect(() => {
     setActiveIndex(0);
     //videoRefs.current = [];
   }, [selectedCategory]);
