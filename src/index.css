@@ -54,11 +54,9 @@ html, body {
 /* Contenedor tipo teléfono (solo escritorio) */
 .phone-container {
   width: 100%;
-  max-width: 430px; /* tamaño tipo móvil */
   /*height: calc(100vh - 180px);*/
   background: black;
   border-radius: 25px;
-  overflow: hidden;
   box-shadow: 0 0 40px rgba(0,0,0,0.8);
   border: 2px solid #222;
   overflow: hidden;
@@ -163,8 +161,9 @@ html, body {
 /* 📱 En móvil ocupa toda la pantalla */
 @media (max-width: 768px) {
   .phone-container {
-   max-width: 100%;
-    /*height: calc(100vh - 180px);*/
+    border-radius: 0;   /* ocupa pantalla completa en móvil */
+    border: none;       /* quitamos marco */
+    box-shadow: none;   /
   }
 }
 
@@ -172,13 +171,13 @@ html, body {
 .bottom-nav {
   /*position: sticky;*/
   bottom: 0;
+  height: 60px;
   width: 100%;
   max-width: 430px; /* igual que phone-container */
   background-color: #111;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 10px 0;
   border-top: 1px solid #222;
   z-index: 10;
   flex-shrink: 0;
@@ -187,6 +186,7 @@ html, body {
 .bottom-nav button {
   display: flex;
   flex-direction: column;
+  justify-content: center;  /* 👈 centra vertical */
   align-items: center;
   background: none;
   border: none;
