@@ -1,10 +1,14 @@
-import React, { forwardRef, useState, useEffect, useRef } from "react";
+import React, { useRef, useState, useEffect, forwardRef } from "react";
 
-const Video = forwardRef(({ dish, index, isActive, onAdd, onOpenModal }, ref) => {
+const Video = forwardRef(({ url, title, price, isActive, index }, ref) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
   const [isNear, setIsNear] = useState(false);
+  const [likes, setLikes] = useState(0);
 
+
+  // Detecta si está cerca del viewport
+  //Esta funcion es para precarge el video que viene despues
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -32,6 +36,8 @@ const Video = forwardRef(({ dish, index, isActive, onAdd, onOpenModal }, ref) =>
     };
   }, []);
 
+
+  // Maneja reproducción según si el video está activo
 useEffect(() => {
   const video = videoRef.current;
   if (!video) return;
@@ -53,46 +59,37 @@ useEffect(() => {
   }
 }, [isActive, isNear]);
 
+  const likeVideo = () => setLikes(likes + 1);
+
   return (
-    <div className="video-container" ref={(el) => {
+    <div
+      className="video-container"
+      ref={(el) => {
         containerRef.current = el;
         if (ref) ref(el);
       }}
       data-index={index}
-      >
-      <video
-        ref={videoRef}
-        src={dish.url}
-        className="video"
-        muted
-        loop
-        playsInline
-      />
-
-          {/* 🔥 Degradado oscuro profesional */}
-      <div className="video-gradient"></div>
+    >
+      {isNear && (
+        <video
+          ref={videoRef}
+          src={url}
+          className="video"
+          loop
+          muted
+          playsInline
+        />
+      )}
 
       <div className="video-info">
-        <h3 className="video-title">{dish.title}</h3>
-        <p className="video-description">{dish.description}</p>
-        <div className="video-price-row">
-          <span className="video-price">{dish.price}€</span>
-          <button
-            className="ver-mas-btn"
-            onClick={() => onOpenModal(dish)}
-          >
-            Ver más
-          </button>
-        </div>
+        <h2>{title}</h2>
+        <p>{price}</p>
       </div>
 
-      {/* 🔥 Botón añadir flotante a la derecha */}
-      <button
-        className="add-btn"
-        onClick={() => onAdd(dish)}
-      >
-        + Añadir
-      </button>
+      <div className="buttons">
+        <button onClick={likeVideo}>❤️ {likes}</button>
+        <button>🛒</button>
+      </div>
     </div>
   );
 });

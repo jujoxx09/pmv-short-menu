@@ -95,6 +95,20 @@ function App() {
   const goToCarta = () => {
     setShowVideos(true);
   };
+
+  useEffect(() => {
+  const setRealHeight = () => {
+    document.documentElement.style.setProperty(
+      "--vh",
+      `${window.innerHeight * 0.01}px`
+    );
+  };
+
+  setRealHeight();
+  window.addEventListener("resize", setRealHeight);
+
+  return () => window.removeEventListener("resize", setRealHeight);
+  }, []);
   
 
   useEffect(() => {
@@ -151,26 +165,27 @@ function App() {
         </header>
 
         <div
-  className="category-bar"
-  onMouseMove={(e) => {
-    const bar = e.currentTarget;
-    const rect = bar.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left; // posición X relativa
-    const percent = mouseX / rect.width;   // 0 = izquierda, 1 = derecha
-    const maxScroll = bar.scrollWidth - bar.clientWidth;
-    bar.scrollLeft = percent * maxScroll;
-  }}
->
-  {categories.map((cat, index) => (
-    <button
-      key={index}
-      className={selectedCategory === cat ? "active-category" : ""}
-      onClick={() => setSelectedCategory(cat)}
-    >
-      {cat}
-    </button>
-  ))}
-</div>
+          className="category-bar"
+          onMouseMove={(e) => {
+            const bar = e.currentTarget;
+            const rect = bar.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left; // posición X relativa
+            const percent = mouseX / rect.width;   // 0 = izquierda, 1 = derecha
+            const maxScroll = bar.scrollWidth - bar.clientWidth;
+            bar.scrollLeft = percent * maxScroll;
+          }}
+        >
+
+          {categories.map((cat, index) => (
+            <button
+              key={index}
+              className={selectedCategory === cat ? "active-category" : ""}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
         <div className="phone-wrapper">
           <div className="phone-container">
@@ -188,48 +203,46 @@ function App() {
                   />
                 ))}
               </div>
-            ) : activeTab === "Menu" ? (
-             <div className="menu-vertical">
-                {filteredVideos.map((video, index) => (
-                  <div key={index} className="menu-card-vertical">
-                    <video
-                      ref={(el) => (menuVideoRefs.current[index] = el)}
-                      src={video.url}
-                      muted
-                      loop
-                      playsInline
-                      className="menu-video-vertical"
-                      onClick={() => {
-                        // Pausar todos los videos
-                        menuVideoRefs.current.forEach((vid, i) => {
-                          if (vid && i !== index) {
-                            vid.pause();
-                            vid.currentTime = 0;
-                          }
-                        });
+                ) : activeTab === "Menu" ? (
+                <div className="menu-vertical">
+                  {filteredVideos.map((video, index) => (
+                    <div key={index} className="menu-card-vertical">
+                      <video
+                        ref={(el) => (menuVideoRefs.current[index] = el)}
+                        src={video.url}
+                        muted
+                        loop
+                        playsInline
+                        className="menu-video-vertical"
+                        onClick={() => {
+                          // Pausar todos los videos
+                          menuVideoRefs.current.forEach((vid, i) => {
+                            if (vid && i !== index) {
+                              vid.pause();
+                              vid.currentTime = 0;
+                            }
+                          });
 
-                        // Reproducir el seleccionado
-                        const currentVideo = menuVideoRefs.current[index];
-                        if (currentVideo.paused) {
-                          currentVideo.play();
-                        } else {
-                          currentVideo.pause();
-                        }
-                      }}
-                    />
-                    <div className="menu-info">
-                      <h3>{video.title}</h3>
-                      <p className="menu-description">{video.description}</p>
-                      <p className="menu-price">{video.price}</p>
+                          // Reproducir el seleccionado
+                          const currentVideo = menuVideoRefs.current[index];
+                          if (currentVideo.paused) {
+                            currentVideo.play();
+                          } else {
+                            currentVideo.pause();
+                          }
+                        }}
+                      />
+                      <div className="menu-info">
+                        <h3>{video.title}</h3>
+                        <p className="menu-description">{video.description}</p>
+                        <p className="menu-price">{video.price}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : null}
+                  ))}
+                </div>
+                ) : null}
           </div>
         </div>
-
-      
 
         <div className="bottom-nav">
           <button onClick={() => setActiveTab("Videos")} >
@@ -252,6 +265,7 @@ function App() {
             <p>Favoritos</p>
           </button>
         </div>
+
       </div>
     </div>
   );
