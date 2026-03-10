@@ -1,4 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
+import { auth } from "./firebase";
+import Login from "./components/Login";
+import { onAuthStateChanged } from "firebase/auth";
+import Register from "./components/Register";
+import prueba from "./assets/videos/prueba.mp4";
 import Video from "./components/Video";
 import Home from "./components/Home";
 import Modal from "./components/Modal";
@@ -21,7 +26,7 @@ const videos = [
   },
   {
     id: 2,
-    url: "https://www.w3schools.com/html/movie.mp4",
+    url: prueba,
     title: "Hamburguesa BBQ",
     price: 14,
     description: "Carne 100% vacuno con salsa BBQ",
@@ -89,7 +94,9 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [showVideos, setShowVideos] = useState(false);
   const [activeTab, setActiveTab] = useState("Videos");
-
+  const [openMenu, setOpenMenu] = useState(false);
+  
+  const [user, setUser] = useState(null);
   //const [cart, setCart] = useState([]);
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
@@ -100,6 +107,7 @@ function App() {
   const videoRefs = useRef([]);
   const categories = ["Todos", ...new Set(videos.map(v => v.category))];
   const menuVideoRefs = useRef([]);
+  const categoryBarRef = useRef(null);
 
   const filteredVideos =
     selectedCategory === "Todos"
@@ -107,7 +115,6 @@ function App() {
       : videos.filter(video => video.category === selectedCategory);
 
   const goToCarta = () => setShowVideos(true);
-
 
   // 🔥 Añadir plato
   const addToCart = (dish) => {
@@ -172,6 +179,14 @@ function App() {
   );
 
   useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  return () => unsubscribe();
+}, []);
+
+  useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
@@ -194,74 +209,127 @@ function App() {
     //videoRefs.current = [];
   }, [selectedCategory]);
 
-  useEffect(() => {
- 
-     if (!showVideos) return; 
-     
-     const options = {
-       root: null,
-       rootMargin: "0px",
-       threshold: 0.6, // video al 60% visible
-     };
- 
-     const observer = new IntersectionObserver((entries) => {
-       entries.forEach((entry) => {
-         const index = Number(entry.target.dataset.index);
-         if (entry.isIntersecting) {
-           setActiveIndex(index);
-         }
-       });
-     }, options);
- 
-     videoRefs.current.forEach((ref) => {
-       if (ref) observer.observe(ref);
-     });
- 
-     if (videoRefs.current[0]) {
-       const videoEl = videoRefs.current[0].querySelector("video");
-     
-       if (videoEl) {
-         videoEl.currentTime = 0;
-         videoEl.play().catch(() => {});
-       }
-     }
- 
-     return () => observer.disconnect();
-   }, [showVideos, filteredVideos]);
+  /*esto si falla hay que quitarlo*/ 
+useEffect(() => {
+  if (activeTab === "Videos") {
+    videoRefs.current.forEach(ref => {
+      const videoEl = ref?.querySelector("video");
+      if (videoEl) {
+        videoEl.pause();
+      }
+    });
+    const firstVideo = videoRefs.current[0]?.querySelector("video");
+    if (firstVideo) firstVideo.play().catch(() => {});
+  }
+}, [activeTab]);
+
+useEffect(() => {
+  if (!showVideos || activeTab !== "Videos") return;
+
+  const options = { root: null, rootMargin: "0px", threshold: 0.6 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const index = Number(entry.target.dataset.index);
+      if (entry.isIntersecting) {
+        setActiveIndex(index);
+        const videoEl = entry.target.querySelector("video");
+        if (videoEl) {
+          videoEl.currentTime = 0;
+          videoEl.play().catch(() => {});
+        }
+      } else {
+        const videoEl = entry.target.querySelector("video");
+        if (videoEl) {
+          videoEl.pause();
+        }
+      }
+    });
+  }, options);
+
+  videoRefs.current.forEach(ref => ref && observer.observe(ref));
+
+  return () => observer.disconnect();
+}, [showVideos, activeTab, filteredVideos]);
 
 
   if (!showVideos) return <Home onGoToCarta={goToCarta} />;
-
+  if (!user) {
+  return (
+    <>
+      <Login />
+      <Register />
+    </>
+  );
+}
   return (
     <div className="page">
       <div className="app-container">
         <header className="header">
           <h1>Mi Carta Digital</h1>
+
+            <div className="menu-wrapper">
+              <button 
+                className="menu-btn"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                ⋮
+              </button>
+
+              {openMenu && (
+                <div className="menu-dropdown">
+                  <button onClick={() => setActiveTab("Lista")}>Ver Pedido</button>
+                  <button onClick={() => setSelectedCategory("Todos")}>Todas las categorías</button>
+                  <button onClick={() => alert("Función próximamente")}>Información</button>
+                </div>
+              )}
+            </div>
         </header>
 
-        <div
-          className="category-bar"
-          onMouseMove={(e) => {
-            const bar = e.currentTarget;
-            const rect = bar.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left; // posición X relativa
-            const percent = mouseX / rect.width;   // 0 = izquierda, 1 = derecha
-            const maxScroll = bar.scrollWidth - bar.clientWidth;
-            bar.scrollLeft = percent * maxScroll;
-          }}
-        >
+        {activeTab !== "Lista" && (
+          <div
+            ref={categoryBarRef}
+            className="category-bar"
+            onMouseMove={(e) => {
+              const bar = e.currentTarget;
+              const rect = bar.getBoundingClientRect();
+              const mouseX = e.clientX - rect.left; // posición X relativa
+              const percent = mouseX / rect.width;   // 0 = izquierda, 1 = derecha
+              const maxScroll = bar.scrollWidth - bar.clientWidth;
+              bar.scrollLeft = percent * maxScroll;
+            }}
+          >
 
-          {categories.map((cat, index) => (
-            <button
-              key={index}
-              className={selectedCategory === cat ? "active-category" : ""}
-              onClick={() => setSelectedCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+            {categories.map((cat, index) => (
+              <button
+                key={index}
+                className={selectedCategory === cat ? "active-category" : ""}
+                onClick={(e) => {
+                  setSelectedCategory(cat);
 
+                  const buttonLeft = button.offsetLeft;
+                  const buttonWidth = button.offsetWidth;
+                  const barWidth = bar.offsetWidth;
+
+                  let scrollPosition =
+                    buttonLeft - barWidth / 2 + buttonWidth / 2;
+
+                  // 🔥 Limitar valores
+                  const maxScroll = bar.scrollWidth - bar.clientWidth;
+
+                  if (scrollPosition < 0) scrollPosition = 0;
+                  if (scrollPosition > maxScroll) scrollPosition = maxScroll;
+
+                  bar.scrollTo({
+                    left: scrollPosition,
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}    
         <div className="phone-wrapper">
           <div className="phone-container">
             {activeTab === "Videos" && (
