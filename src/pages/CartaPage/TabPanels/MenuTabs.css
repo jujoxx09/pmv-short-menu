@@ -1,0 +1,171 @@
+/* =========================
+   GRID DE PLATOS
+========================= */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  padding-top: 60px;  
+  padding-bottom: 60px;
+}
+
+/* =========================
+   CARD DE PLATO
+========================= 
+.menu-card {
+
+  background: #fff;
+  border-radius: 16px;
+
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}*/
+
+.menu-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  display: flex;
+  flex-direction: row; /* 🔥 CAMBIO CLAVE */
+  align-items: stretch;
+}
+
+/* =========================
+   VIDEO / MEDIA
+========================= */
+.menu-card video,
+.menu-video {
+  width: 180px;     /* 🔥 ancho fijo tipo app */
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  flex-shrink: 0;   /* evita que se deforme */
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+.menu-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 🔥 separa info y botones */
+  flex: 1;
+}
+
+.menu-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+
+.menu-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.menu-desc {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.menu-price {
+  font-size: 15px;
+  font-weight: bold;
+  color: #111;
+}
+
+.menu-category {
+  font-size: 12px;
+  color: #888;
+}
+
+/* alérgenos */
+.menu-allergens {
+  font-size: 12px;
+  color: #999;
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+.menu-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.menu-button {
+  flex: 1;
+  padding: 8px;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+/* botón añadir carrito */
+.menu-button.cart {
+  background: #007aff;
+  color: #fff;
+}
+
+.menu-button.cart:hover {
+  background: #005fdb;
+}
+
+/* botón favoritos */
+.menu-button.fav {
+  background: #f2f2f7;
+  color: #111;
+}
+
+.menu-button.fav.active {
+  background: #ff2d55;
+  color: #fff;
+}
+
+@media(min-width: 768px) {
+  .menu-grid {
+    padding-left: 120px; /* deja espacio a categorías */
+    padding-top: 10px;
+  }
+}
+
+.menu-video {
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* Evita overlays raros en móviles */
+video::-webkit-media-controls {
+  display: none !important;
+}
+

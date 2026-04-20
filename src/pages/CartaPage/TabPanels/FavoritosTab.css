@@ -1,0 +1,172 @@
+/* =========================
+   CONTENEDOR GENERAL
+========================= */
+.fav-container {
+  padding: 16px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* =========================
+   TITULO
+========================= */
+.fav-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* =========================
+   BLOQUE DE PUNTOS (LOYAUTY CARD)
+========================= */
+.points-card {
+  background: #fff;
+
+  border-radius: 16px;
+  padding: 16px;
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.points-level {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.points-text {
+  font-size: 13px;
+  color: #666;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+
+  background: #eee;
+  border-radius: 999px;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffcc00, #ff9500);
+  transition: width 0.3s ease;
+}
+
+/* =========================
+   REDEEM CARD
+========================= */
+.redeem-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.redeem-box h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* input código */
+.redeem-input {
+  padding: 10px;
+
+  border-radius: 12px;
+  border: 1px solid #ddd;
+
+  outline: none;
+  font-size: 14px;
+}
+
+/* botón canjear */
+.redeem-button {
+  padding: 10px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #007aff;
+  color: #fff;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.redeem-button:hover {
+  background: #005fdb;
+}
+
+/* =========================
+   LISTA FAVORITOS
+========================= */
+.fav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* card favorito */
+.fav-item {
+  background: #fff;
+
+  border-radius: 16px;
+  padding: 12px;
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.fav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fav-img {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* nombre */
+.fav-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* botón eliminar */
+.fav-delete {
+  background: #ff3b30;
+  color: white;
+
+  border: none;
+  padding: 8px 10px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.fav-delete:hover {
+  background: #d70015;
+}

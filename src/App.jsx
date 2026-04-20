@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { auth } from "./firebase";
 import Login from "./components/Login";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import Register from "./components/Register";
 import prueba from "./assets/videos/prueba.mp4";
 import Video from "./components/Video";
@@ -116,6 +116,16 @@ function App() {
 
   const goToCarta = () => setShowVideos(true);
 
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("Sesión cerrada");
+        setUser(null); // opcional, se actualiza automáticamente con onAuthStateChanged
+      })
+      .catch((error) => {
+        console.error("Error al cerrar sesión:", error.message);
+      });
+  };
   // 🔥 Añadir plato
   const addToCart = (dish) => {
     setCart(prev => {
@@ -282,6 +292,11 @@ useEffect(() => {
                   <button onClick={() => alert("Función próximamente")}>Información</button>
                 </div>
               )}
+              {user && (
+  <button className="btn-logout" onClick={handleLogout}>
+    Cerrar sesión
+  </button>
+)}
             </div>
         </header>
 
@@ -461,8 +476,6 @@ useEffect(() => {
             <p>Favoritos</p>
           </button>
         </div>
-
-
 
       </div>
     </div>

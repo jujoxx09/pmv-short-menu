@@ -1,0 +1,238 @@
+/* =========================
+   CONTENEDOR LISTA CARRITO
+========================= */
+.cart-container {
+  padding: 16px;
+  padding-bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  max-width: 500px;   /* 🔥 centra en PC */
+  margin: 0 auto;
+}
+
+/* =========================
+   CART ITEM (CARD)
+========================= */
+.cart-item {
+  background: #fff;
+  border-radius: 20px;
+  flex-direction: column;
+
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+
+  padding: 14px;
+
+  display: flex;
+  gap: 14px; /* 🔥 horizontal */
+
+  transition: 0.2s ease;
+  align-self: cen;
+}
+
+.cart-item:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   VIDEO (ARRIBA)
+========================= */
+.cart-video {
+  width: 100%;      /* 🔥 ocupa todo el ancho */
+  height: 250px;    /* altura tipo card */
+  border-radius: 14px;
+  margin-bottom: 4px;
+  object-fit: cover;
+}
+
+/* =========================
+   CONTENIDO DERECHA
+========================= */
+.cart-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+}
+
+/* =========================
+   TITULO
+========================= */
+.cart-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* =========================
+   DESCRIPCION
+========================= */
+.cart-desc {
+  font-size: 13px;
+  color: #666;
+
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================
+   ALERGENOS
+========================= */
+.cart-allergens {
+  font-size: 12px;
+  color: #999;
+}
+
+/* =========================
+   PRECIO
+========================= */
+.cart-price {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* =========================
+   CANTIDAD
+========================= */
+.cart-qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.cart-qty button {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: #111;
+  color: #fff;
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-qty span {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* =========================
+   INPUT NOTAS (🔥 MEJORADO)
+========================= */
+.cart-input {
+  width: 100%;
+  padding: 10px 12px;
+
+  border-radius: 14px;
+  border: 1px solid #eee;
+
+  background: #f9f9fb;
+
+  outline: none;
+  font-size: 13px;
+
+  margin-top: 8px;
+
+  transition: 0.2s ease;
+}
+
+.cart-input:focus {
+  border: 1px solid #007aff;
+  background: #fff;
+}
+
+/* =========================
+   FOOTER CARD (BOTONES)
+========================= */
+.cart-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 10px;
+}
+
+/* BOTON VER MAS */
+.cart-more {
+  background: #111;
+  color: #fff;
+
+  border: none;
+  padding: 6px 12px;
+  border-radius: 10px;
+
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* BOTON ELIMINAR */
+.cart-delete {
+  background: transparent;
+  color: #ff3b30;
+
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* =========================
+   TOTAL
+========================= */
+.cart-total {
+  display: flex;
+  flex-direction: row; /* 🔥 fuerza horizontal */
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%; /* importante */
+
+  padding: 16px 20px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+
+
+}
+
+/* =========================
+   BOTON VACIAR
+========================= */
+.cart-clear {
+  margin-top: 10px;
+
+  background: #ff3b30;
+  color: #fff;
+
+  border: none;
+  padding: 14px;
+
+  border-radius: 16px;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  width: 100%;
+}
+
+/* =========================
+   DESKTOP MEJORA
+========================= */
+@media (min-width: 768px) {
+  .cart-container {
+    padding-top: 30px;
+  }
+}

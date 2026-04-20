@@ -1,0 +1,21 @@
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+
+export default function Layout() {
+  const location = useLocation();
+
+   const isCarta = location.pathname === "/menu";
+
+  return (
+    <>
+      <Header />
+
+      <main className={isCarta ? "main-app" : "main-normal"}>
+        <Outlet />
+      </main>
+
+      {!isCarta && <Footer />}
+    </>
+  );
+}
