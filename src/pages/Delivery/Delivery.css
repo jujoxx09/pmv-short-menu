@@ -1,0 +1,102 @@
+.delivery-page {
+  min-height: 100vh;
+  padding: 20px;
+  background: #0f0f0f;
+  color: white;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+.delivery-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.delivery-empty {
+  text-align: center;
+  margin-top: 40px;
+  opacity: 0.7;
+}
+
+/* 🧾 CARD PEDIDO */
+.order-card {
+  background: #1a1a1a;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 15px;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.order-card:hover {
+  transform: scale(1.02);
+}
+
+/* 💰 TOTAL */
+.order-total {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* 📦 ESTADO */
+.order-status {
+  margin-bottom: 8px;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* estados */
+.status.pendiente {
+  background: #ffb703;
+  color: black;
+}
+
+.status.preparando {
+  background: #219ebc;
+  color: white;
+}
+
+.status.en-camino {
+  background: #8ecae6;
+  color: black;
+}
+
+.status.entregado {
+  background: #2a9d8f;
+  color: white;
+}
+
+/* 📍 DIRECCIÓN */
+.order-address {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+/* 🍔 ITEMS */
+.order-items {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.order-item {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 3px 0;
+}
+
+.order-note {
+  display: block;
+  margin-top: 2px;
+  opacity: 0.9;
+  font-size: 13px;
+}

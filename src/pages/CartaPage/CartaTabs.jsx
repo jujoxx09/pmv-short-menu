@@ -1,5 +1,5 @@
 import './CartaTabs.css';
-export default function CartaTabs({ activeTab, setActiveTab, setCategoryFilter }) {
+export default function CartaTabs({ activeTab, setActiveTab, setCategoryFilter, categoryFilter, platos }) {
   const tabs = [
     { id: "videos", label: "Videos" },
     { id: "menu", label: "Menu" },
@@ -7,7 +7,14 @@ export default function CartaTabs({ activeTab, setActiveTab, setCategoryFilter }
     { id: "favoritos", label: "Favoritos" }
   ];
 
-  const categories = ["principal", "bebida", "postre"];
+
+  const categories = [
+    ...new Set(
+      platos
+        .map(plato => plato.category)
+        .filter(Boolean)
+    )
+  ];
 
   return (
     <>
@@ -34,9 +41,19 @@ export default function CartaTabs({ activeTab, setActiveTab, setCategoryFilter }
       {/* Categorías */}
       {(activeTab === "videos" || activeTab === "menu") && (
         <div className="categories">
-          <button onClick={() => setCategoryFilter(null)}>Todas</button>
+          <button
+            className={!categoryFilter ? "active-category" : ""}
+            onClick={() => setCategoryFilter(null)}
+          >
+            Todas
+          </button>
+
           {categories.map(cat => (
-            <button key={cat} onClick={() => setCategoryFilter(cat)}>
+            <button
+              key={cat}
+              className={categoryFilter === cat ? "active-category" : ""}
+              onClick={() => setCategoryFilter(cat)}
+            >
               {cat}
             </button>
           ))}

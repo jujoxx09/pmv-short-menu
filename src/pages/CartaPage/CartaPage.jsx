@@ -38,20 +38,32 @@ export default function CartaPage() {
 import { useState, useEffect } from "react";
 import { auth } from "../../services/firebase"; // ajusta la ruta si hace falta
 import { createUserIfNotExists } from "../../services/user";
+import { useCollection } from "../../hooks/useCollection";
+import {
+  useSearchParams,
+  useNavigate
+} from "react-router-dom";
 
 import { onAuthStateChanged } from "firebase/auth";
 
 import CartaTabs from "./CartaTabs";
-
 import VideosTab from "./TabPanels/VideosTab";
 import MenuTab from "./TabPanels/MenuTab";
 import ListaTab from "./TabPanels/ListaTab";
 import FavoritosTab from "./TabPanels/FavoritosTab";
 
 export default function CartaPage() {
-  const [activeTab, setActiveTab] = useState("videos");
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [user, setUser] = useState(null);
+  const { items: platos } = useCollection("platos");
+
+  const initialTab =
+  searchParams.get("tab") || "videos";
+
+const [activeTab, setActiveTab] =
+  useState(initialTab);
 
   // 🔐 Detectar usuario logueado
   useEffect(() => {
@@ -66,12 +78,22 @@ export default function CartaPage() {
   return () => unsubscribe();
 }, []);
 
+ const handleTabChange = (tab) => {
+
+    setActiveTab(tab);
+
+    navigate(`/menu?tab=${tab}`);
+  };
+
+
   return (
      <div >
       <CartaTabs
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
         setCategoryFilter={setCategoryFilter}
+        categoryFilter={categoryFilter}
+        platos={platos}
         user={user} // 👈 importante para bloquear desde tabs si quieres
       />
 
@@ -91,7 +113,10 @@ export default function CartaPage() {
       {/* ❤️ FAVORITOS */}
       {activeTab === "favoritos" && (
         user ? (
-          <FavoritosTab user={user} />
+          <FavoritosTab
+            user={user}
+            setActiveTab={setActiveTab}
+          />
         ) : (
           <div >
             <p>🔒 Debes iniciar sesión para ver tus favoritos</p>

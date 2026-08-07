@@ -4,6 +4,9 @@ import { collection, addDoc, getDocs, serverTimestamp, doc, updateDoc, deleteDoc
 import { QRCodeCanvas } from "qrcode.react";
 import "./AdminPage.css";
 
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+
 export default function AdminPage() {
   const [tab, setTab] = useState("platos");
 
@@ -19,8 +22,36 @@ export default function AdminPage() {
   const [preview, setPreview] = useState(null);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
-  const [editingId, setEditingId] = useState(null); // ID del plato que estamos editando
-  const [platos, setPlatos] = useState([]); // Lista de platos
+  // ID del plato que estamos editando
+  const [editingId, setEditingId] = useState(null); 
+  // Lista de platos
+  const [platos, setPlatos] = useState([]); 
+
+  // Reservas
+  const [reservas, setReservas] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  
+  const formatDate = (date) => {
+
+  const year = date.getFullYear();
+
+  const month = String(
+    date.getMonth() + 1
+  ).padStart(2, "0");
+
+  const day = String(
+    date.getDate()
+  ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+  // Pedidos
+  const [pedidos, setPedidos] = useState([]);
+
+
+
+  // Códigos
   const [codigo, setCodigo] = useState("");
   const [codigos, setCodigos] = useState([]);
   const [puntosCodigo, setPuntosCodigo] = useState(10);
@@ -29,6 +60,9 @@ export default function AdminPage() {
   const CLOUD_NAME = "dpl5gkoyi";
   const UPLOAD_PRESET = "videosProyect";
 
+  // =========================
+  // 🔥 FETCH CÓDIGOS
+  // =========================
 
   const fetchCodigos = async () => {
   const snapshot = await getDocs(collection(db, "codigos"));
@@ -38,6 +72,59 @@ export default function AdminPage() {
   }));
   setCodigos(data);
 };
+
+  // =========================
+  // 🔥 FETCH RESERVAS
+  // =========================
+  const fetchReservas = async () => {
+    const snapshot = await getDocs(collection(db, "reservas"));
+
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // ordenar más recientes primero
+    data.sort((a, b) => b.createdAt - a.createdAt);
+
+    setReservas(data);
+  };
+
+  //Para ver el calendario en la pestaña de reservas
+
+  const tieneReservas = (date) => {
+
+    const formatted = formatDate(date);
+
+    return reservas.some(
+      (r) => r.fecha === formatted
+    );
+  };
+
+  const reservasDelDia = reservas.filter(
+    (r) =>
+      r.fecha === formatDate(selectedDate)
+  );
+
+    // =========================
+  // 🔥 FETCH PEDIDOS
+  // =========================
+
+  const fetchPedidos = async () => {
+  const snapshot = await getDocs(collection(db, "pedidos"));
+
+  const data = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+
+  // más recientes primero
+  data.sort((a, b) => b.createdAt - a.createdAt);
+
+  setPedidos(data);
+};
+
+
 
   const generarCodigo = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -97,6 +184,9 @@ const handleGenerateCodigos = async () => {
   useEffect(() => {
     fetchPlatos();
     fetchCodigos();
+    fetchReservas();
+    fetchPedidos(); 
+
   }, []);
 
   // 🔹 Manejar inputs de texto
@@ -129,6 +219,40 @@ const handleGenerateCodigos = async () => {
     alert("✅ Plato eliminado");
     setPlatos(platos.filter(p => p.id !== id));
   };
+
+  // Eliminar reserva
+
+    const handleDeleteReserva = async (id) => {
+
+    if (!confirm("¿Eliminar reserva?")) return;
+
+    try {
+
+      await deleteDoc(doc(db, "reservas", id));
+
+      setReservas(
+        reservas.filter((r) => r.id !== id)
+      );
+
+      alert("✅ Reserva eliminada");
+
+    } catch (error) {
+      console.error(error);
+      alert("❌ Error eliminando reserva");
+    }
+  };
+
+  //Cambiar estado del pedido
+
+  const cambiarEstadoPedido = async (id, estado) => {
+  const ref = doc(db, "pedidos", id);
+
+  await updateDoc(ref, {
+    estado
+  });
+
+  fetchPedidos();
+};
 
   // 🔹 Crear o actualizar plato
   const handleUpload = async (e) => {
@@ -276,6 +400,20 @@ const handleGenerateCodigos = async () => {
         >
           🎟️ Códigos
         </button>
+         {/* 🔥 NUEVA TAB */}
+        <button
+          className={`admin-tab ${tab === "reservas" ? "active" : ""}`}
+          onClick={() => setTab("reservas")}
+        >
+          🍔 Reservas
+        </button>
+
+        <button
+          className={`admin-tab ${tab === "pedidos" ? "active" : ""}`}
+          onClick={() => setTab("pedidos")}
+        >
+          🛵 Pedidos
+        </button>
       </div>
 
       {/* =========================
@@ -376,6 +514,146 @@ const handleGenerateCodigos = async () => {
             ))}
           </div>
         </>
+      )}
+
+            {/* =========================
+          TAB RESERVAS
+      ========================= */}
+{tab === "reservas" && (
+
+  <div className="reservas-admin">
+
+    {/* 📅 CALENDARIO */}
+    <div className="calendar-wrapper">
+
+      <Calendar
+
+        onChange={setSelectedDate}
+
+        value={selectedDate}
+
+        tileClassName={({ date, view }) => {
+
+          if (
+            view === "month" &&
+            tieneReservas(date)
+          ) {
+            return "has-reservation";
+          }
+
+        }}
+
+      />
+
+    </div>
+
+    {/* 🍔 RESERVAS DEL DÍA */}
+    <div className="reservas-admin-list">
+
+      <h2>
+        Reservas del{" "}
+        {selectedDate.toLocaleDateString()}
+      </h2>
+
+      {reservasDelDia.length > 0 ? (
+
+        reservasDelDia.map((r) => (
+
+          <div
+            key={r.id}
+            className="admin-card reserva-card"
+          >
+
+            <h3>{r.nombre}</h3>
+
+            <p>📞 {r.telefono}</p>
+
+            <p>📧 {r.email}</p>
+
+            <p>👥 {r.personas} personas</p>
+
+            <p>🕒 {r.hora}</p>
+
+            <button
+              className="btn-delete"
+              onClick={() =>
+                handleDeleteReserva(r.id)
+              }
+            >
+              Eliminar reserva
+            </button>
+
+          </div>
+
+        ))
+
+      ) : (
+
+        <p>No hay reservas este día</p>
+
+      )}
+
+    </div>
+
+  </div>
+
+)}
+
+      {tab === "pedidos" && (
+        <div className="admin-list">
+
+          {pedidos.map(p => (
+            <div key={p.id} className="pedido-card">
+
+              <h3>👤 {p.cliente}</h3>
+
+              <p>📞 {p.telefono}</p>
+              <p>📍 {p.direccion}</p>
+
+              <p>💰 Total: {p.total.toFixed(2)}€</p>
+
+              <p>📦 Estado: <strong>{p.estado}</strong></p>
+
+              {/* 🍔 ITEMS */}
+              <div className="pedido-items">
+                {p.items.map((item, i) => (
+                  <div key={i}>
+
+                    <p className="pedido-item">
+                      {item.quantity}x {item.name}
+                    </p>
+
+                    {item.notes && (
+                     <small className="pedido-note">
+                        📝 {item.notes}
+                      </small>
+                    )}
+
+                  </div>
+                ))}
+              </div>
+
+              {/* 🔥 BOTONES ESTADO */}
+              <div className="admin-actions">
+
+                <button onClick={() => cambiarEstadoPedido(p.id, "preparando")}>
+                  👨‍🍳 Preparando
+                </button>
+
+                <button onClick={() => cambiarEstadoPedido(p.id, "en camino")}>
+                  🚗 En camino
+                </button>
+
+                <button onClick={() => cambiarEstadoPedido(p.id, "entregado")}>
+                  ✅ Entregado
+                </button>
+
+              </div>
+
+            </div>
+          ))}
+
+        </div>
       )}
 
     </div>

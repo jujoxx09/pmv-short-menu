@@ -10,8 +10,9 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AdminRoute from "../components/AdminRoute";
+import PlatoDetail from "../pages/CartaPage/PlatoDetail";
 
-export default function AppRoutes() {
+export default function AppRoutes({ user }) {
   return (
     <BrowserRouter basename="/pmv-short-menu">
       <Routes>
@@ -21,6 +22,9 @@ export default function AppRoutes() {
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/menu" element={<CartaPage />} />
+
+          {/* Detalle de plato */}
+          <Route path="/plato/:id" element={<PlatoDetail user={user}/>} />
 
           {/* Admin protegido */}
           <Route
@@ -46,6 +50,8 @@ export default function AppRoutes() {
         {/* Login/Register fuera del Layout */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        
       </Routes>
     </BrowserRouter>
   );

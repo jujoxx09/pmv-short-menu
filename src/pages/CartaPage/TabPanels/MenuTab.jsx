@@ -4,6 +4,8 @@ import { addToFavorites, removeFromFavorites } from "../../../services/favoritos
 import { useEffect, useState, useRef } from "react";
 import { db } from "../../../services/firebase";
 import { addPoints } from "../../../services/user";
+import { useNavigate } from "react-router-dom";
+import { FaHeart, FaRegHeart, FaPlus, FaPlay } from "react-icons/fa";
 import {
   collection,
   query,
@@ -14,6 +16,7 @@ import "./MenuTabs.css";
 
 
 export default function MenuTab({ categoryFilter, user })  {
+  const navigate = useNavigate();
   const { items: platos, loading } = useCollection("platos", categoryFilter);
   const { addToCart } = useCart(); // para añadir el carrito
   const [favoritosIds, setFavoritosIds] = useState([]);
@@ -22,6 +25,8 @@ export default function MenuTab({ categoryFilter, user })  {
 
   const handlePlay = (id) => {
   const currentVideo = videoRefs.current[id];
+
+
 
   if (!currentVideo) return;
 
@@ -85,17 +90,32 @@ export default function MenuTab({ categoryFilter, user })  {
       <div key={plato.id} className="menu-card">
 
         {plato.videoUrl && (
-          <video
-            src={plato.videoUrl}
-            ref={(el) => (videoRefs.current[plato.id] = el)}
-            onClick={() => handlePlay(plato.id)}
-            className="menu-video"
-          />
+          <div className="video-wrapper">
+            <video
+              src={plato.videoUrl}
+              ref={(el) => (videoRefs.current[plato.id] = el)}
+              onClick={() => handlePlay(plato.id)}
+              className="menu-video"
+            />
+            {activeVideo !== plato.id && (
+              <button
+                className="play-overlay"
+                onClick={() => handlePlay(plato.id)}
+              >
+                <FaPlay />
+              </button>
+            )}
+          </div>
         )}
 
         <div className="menu-content">
           <div className="menu-info">
-            <h3 className="menu-title">{plato.name}</h3>
+            <h3
+              className="menu-title"
+              onClick={() => navigate(`/plato/${plato.id}`)}
+            >
+              {plato.name}
+            </h3>
             <p className="menu-desc">{plato.description}</p>
 
             <p className="menu-price">{plato.price} €</p>
@@ -110,9 +130,9 @@ export default function MenuTab({ categoryFilter, user })  {
             <button
               className="menu-button cart"
               onClick={() => addToCart(plato)}
-            >
-              Añadir
-            </button>
+              >
+                <FaPlus /> Añadir
+              </button>
 
             <button
               className={`menu-button fav ${
@@ -120,7 +140,7 @@ export default function MenuTab({ categoryFilter, user })  {
               }`}
               onClick={() => handleFavorite(plato)}
             >
-              {favoritosIds.includes(plato.id) ? "❤️" : "🤍"}
+              {favoritosIds.includes(plato.id) ? <FaHeart /> : <FaRegHeart />}
             </button>
           </div>
         </div>

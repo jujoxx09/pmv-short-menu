@@ -220,3 +220,292 @@
 .code-status.used {
   color: red;
 }
+
+/* =========================
+   📅 RESERVAS ADMIN (WRAPPER)
+========================= */
+.reservas-admin,
+.reservas-admin-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+/* 🔥 centrar en móvil */
+@media (max-width: 768px) {
+  .reservas-admin,
+  .reservas-admin-list {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+
+/* =========================
+   RESERVA CARD
+========================= */
+.reserva-card {
+  width: 100%;
+  max-width: 360px;
+
+  background: #ffffff;
+  border-radius: 16px;
+
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reserva-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.reserva-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+}
+
+/* botón eliminar */
+.reserva-card .btn-delete {
+  margin-top: 10px;
+}
+
+/* =========================
+   📅 CALENDARIO MODERNO
+========================= */
+.calendar-wrapper {
+  width: 100%;
+  max-width: 380px;
+
+  margin: auto;
+
+  background: #ffffff;
+  padding: 16px;
+
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* calendario base */
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+
+  background: transparent;
+  color: #111;
+}
+
+/* navegación (mes / flechas) */
+.react-calendar__navigation {
+  margin-bottom: 10px;
+}
+
+.react-calendar__navigation button {
+  background: none;
+  color: #111;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* días */
+.react-calendar__tile {
+  padding: 10px;
+  border-radius: 12px;
+  transition: 0.2s;
+  color: #111;
+}
+
+/* hover */
+.react-calendar__tile:hover {
+  background: #f2f2f7;
+}
+
+/* día activo */
+.react-calendar__tile--active {
+  background: #007aff !important;
+  color: white !important;
+}
+
+/* hoy */
+.react-calendar__tile--now {
+  background: #ffe8a3;
+  border-radius: 12px;
+}
+
+/* días con reservas */
+.has-reservation {
+  background: #ffcc00 !important;
+  color: #111 !important;
+  font-weight: bold;
+  border-radius: 12px;
+}
+
+/* fines de semana */
+.react-calendar__month-view__days__day--weekend {
+  color: #ff3b30;
+}
+
+/* =========================
+   🛵 PEDIDO CARD (PRO STYLE)
+========================= */
+
+.pedidos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.pedido-card {
+  background: #fff;
+  border-radius: 18px;
+
+  padding: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-height: 100%;
+}
+
+.pedido-card:hover {
+  transform: translateY(-2px);
+}
+
+/* =========================
+   INFO CLIENTE
+========================= */
+.pedido-card h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.pedido-card p {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+/* 💰 total destacado */
+.pedido-card p:nth-of-type(3) {
+  font-size: 14px;
+  font-weight: bold;
+  color: #111;
+}
+
+/* =========================
+   📦 ITEMS
+========================= */
+.pedido-items {
+   margin-top: 10px;
+  padding: 10px;
+
+  background: #f6f7fb;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pedido-item {
+  font-size: 13px;
+  color: #333;
+}
+
+/* notas */
+.pedido-note {
+  font-size: 11px;
+  color: #777;
+  margin-left: 10px;
+}
+
+/* =========================
+   📦 ESTADO BADGE
+========================= */
+.pedido-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* estados */
+.status-pendiente {
+  background: #ffe8a3;
+  color: #7a5c00;
+}
+
+.status-preparando {
+  background: #cfe8ff;
+  color: #004a99;
+}
+
+.status-en-camino {
+  background: #d1f7c4;
+  color: #1f6b2d;
+}
+
+.status-entregado {
+  background: #e6e6e6;
+  color: #444;
+}
+
+/* =========================
+   🔥 BOTONES
+========================= */
+.pedido-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+
+  margin-top: 12px;
+}
+
+.pedido-actions button {
+  border: none;
+  border-radius: 10px;
+
+  padding: 10px 6px;
+
+  font-size: 11px;
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.pedido-actions button:hover {
+  transform: scale(1.05);
+}
+
+.pedido-actions button:nth-child(1) {
+  background: #ffcc00;
+}
+
+.pedido-actions button:nth-child(2) {
+  background: #007aff;
+  color: white;
+}
+
+.pedido-actions button:nth-child(3) {
+  background: #34c759;
+  color: white;
+}
+
+.admin-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}

@@ -34,9 +34,15 @@ export const addToFavorites = async (user, plato) => {
   }
 
   await addDoc(collection(db, "favoritos"), {
-    userId: user.uid,
-    platoId: plato.id,
-    nombre: plato.name,
-    imagen: plato.imagen || "",
+     userId: user.uid,
+  platoId: plato.id,
+
+  // 🔥 INFO COMPLETA DEL PLATO
+  name: plato.name || "",
+  description: plato.description || "",
+  price: plato.price || 0,
+  category: plato.category || "",
+  allergens: plato.allergens || [],
+  videoUrl: plato.videoUrl || "",
   });
 };

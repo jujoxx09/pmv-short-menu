@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Login.css";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../firebase";
 
@@ -20,22 +21,41 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="login-page">
 
-      <input
-        type="email"
-        placeholder="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <div className="login-card">
 
-      <input
-        type="password"
-        placeholder="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <h1 className="login-title">
+          🍔 Burger Login
+        </h1>
 
-      <button onClick={login}>Entrar</button>
+        <p className="login-subtitle">
+          Entra y pide tu burger favorita 😎
+        </p>
+
+        <input
+          className="login-input"
+          type="email"
+          placeholder="Correo electrónico"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          className="login-input"
+          type="password"
+          placeholder="Contraseña"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          className="login-btn"
+          onClick={login}
+        >
+          Entrar 🚀
+        </button>
+
+      </div>
+
     </div>
   );
 }
