@@ -14,7 +14,8 @@ import PlatoDetail from "../pages/CartaPage/PlatoDetail";
 
 export default function AppRoutes({ user }) {
   return (
-    <BrowserRouter basename="/pmv-short-menu">
+    //<BrowserRouter basename="/pmv-short-menu">
+    <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
